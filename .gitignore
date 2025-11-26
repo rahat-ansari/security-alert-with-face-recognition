@@ -175,3 +175,7 @@ pnnx*
 # calibration image
 calibration_*.npy
 *.mp4
+
+# ignore .vs directory
+*.vs
+
