@@ -192,7 +192,7 @@ NCNN is a high-performance neural network inference framework optimized for the 
 - **Compatibility and Integration**: Suitable for applications on mobile phones and embedded systems with ARM architecture.
 - **Community Support and Ecosystem**: Supported by a niche but active community focused on mobile and embedded ML applications.
 <<<<<<< HEAD
-- **Case Studies**: Favoured for mobile applications where efficiency and speed are critical on Android and other ARM-based systems.
+- **Case Studies**: Favored for mobile applications where efficiency and speed are critical on Android and other ARM-based systems.
 =======
 
 - **Case Studies**: Favored for mobile applications where efficiency and speed are critical on Android and other ARM-based systems.
