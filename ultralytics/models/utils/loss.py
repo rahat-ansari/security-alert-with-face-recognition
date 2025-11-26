@@ -11,17 +11,11 @@ from .ops import HungarianMatcher
 
 
 class DETRLoss(nn.Module):
-<<<<<<< HEAD
     """
     DETR (DEtection TRansformer) Loss class for calculating various loss components.
 
     This class computes classification loss, bounding box loss, GIoU loss, and optionally auxiliary losses for the
     DETR object detection model.
-=======
-    """DETR (DEtection TRansformer) Loss class. This class calculates and returns the different loss components for the
-    DETR object detection model. It computes classification loss, bounding box loss, GIoU loss, and optionally
-    auxiliary losses.
->>>>>>> 02121a52dd0a636899376093a514e43cc27a4435
 
     Attributes:
         nc (int): Number of classes.
