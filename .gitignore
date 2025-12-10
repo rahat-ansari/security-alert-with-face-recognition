@@ -176,3 +176,11 @@ pnnx*
 calibration_*.npy
 *.mp4
 *.vs
+*.node_modules/
+*.dist/ 
+*.build/ 
+*.idea/ 
+*.vscode/ 
+*.log 
+.env 
+*.DS_Store
