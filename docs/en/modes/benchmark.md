@@ -61,7 +61,7 @@ Once your model is trained and validated, the next logical step is to evaluate i
 
 ## Usage Examples
 
-Run YOLO11n benchmarks on all supported export formats including ONNX, TensorRT etc. See Arguments section below for a full list of export arguments.
+Run YOLO11n benchmarks across all supported export formats (ONNX, TensorRT, etc.). See the Arguments section below for a full list of export options.
 
 !!! example
 
@@ -98,8 +98,8 @@ Arguments such as `model`, `data`, `imgsz`, `half`, `device`, `verbose` and `for
 | `half`    | `False`       | Enables FP16 (half-precision) inference, reducing memory usage and possibly increasing speed on compatible hardware. Use `half=True` to enable.                                                         |
 | `int8`    | `False`       | Activates INT8 quantization for further optimized performance on supported devices, especially useful for edge devices. Set `int8=True` to use.                                                         |
 | `device`  | `None`        | Defines the computation device(s) for benchmarking, such as `"cpu"` or `"cuda:0"`.                                                                                                                      |
-| `verbose` | `False`       | Controls the level of detail in logging output. A boolean value; set `verbose=True` for detailed logs or a float for thresholding errors.                                                               |
-| `format`  | `''`          | Benchmark the model on a single export format. i.e `format=onnx`                                                                                                                                        |
+| `verbose` | `False`       | Controls the level of detail in logging output. Set `verbose=True` for detailed logs.                                                                                                                   |
+| `format`  | `''`          | Benchmarks only the specified export format (e.g., `format=onnx`). Leave it blank to test every supported format automatically.                                                                         |
 
 ## Export Formats
 

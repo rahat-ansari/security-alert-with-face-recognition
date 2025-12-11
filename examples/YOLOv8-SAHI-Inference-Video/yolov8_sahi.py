@@ -11,8 +11,7 @@ from ultralytics.utils.files import increment_path
 
 
 class SAHIInference:
-    """
-    Runs Ultralytics YOLO11 and SAHI for object detection on video with options to view, save, and track results.
+    """Runs Ultralytics YOLO11 and SAHI for object detection on video with options to view, save, and track results.
 
     This class integrates SAHI (Slicing Aided Hyper Inference) with YOLO11 models to perform efficient object detection
     on large images by slicing them into smaller pieces, running inference on each slice, and then merging the results.
@@ -21,22 +20,26 @@ class SAHIInference:
         detection_model (AutoDetectionModel): The loaded YOLO11 model wrapped with SAHI functionality.
 
     Methods:
-        load_model: Loads a YOLO11 model with specified weights.
-        inference: Runs object detection on a video using the loaded model.
-        parse_opt: Parses command line arguments for the inference process.
+        load_model: Load a YOLO11 model with specified weights for object detection using SAHI.
+        inference: Run object detection on a video using YOLO11 and SAHI.
+        parse_opt: Parse command line arguments for the inference process.
+
+    Examples:
+        Initialize and run SAHI inference on a video
+        >>> sahi_inference = SAHIInference()
+        >>> sahi_inference.inference(weights="yolo11n.pt", source="video.mp4", view_img=True)
     """
 
     def __init__(self):
-        """Initializes the SAHIInference class for performing sliced inference using SAHI with YOLO11 models."""
+        """Initialize the SAHIInference class for performing sliced inference using SAHI with YOLO11 models."""
         self.detection_model = None
 
     def load_model(self, weights: str, device: str) -> None:
-        """
-        Load a YOLO11 model with specified weights for object detection using SAHI.
+        """Load a YOLO11 model with specified weights for object detection using SAHI.
 
         Args:
             weights (str): Path to the model weights file.
-            device (str, optional): CUDA device, i.e., '0' or '0,1,2,3' or 'cpu'. Defaults to "".
+            device (str): CUDA device, i.e., '0' or '0,1,2,3' or 'cpu'.
         """
         from ultralytics.utils.torch_utils import select_device
 
@@ -48,7 +51,6 @@ class SAHIInference:
 
     def inference(
         self,
-<<<<<<< HEAD
         weights: str = "yolo11n.pt",
         source: str = "test.mp4",
         view_img: bool = False,
@@ -59,20 +61,10 @@ class SAHIInference:
         slice_width: int = 512,
         slice_height: int = 512,
     ) -> None:
-        """
-        Run object detection on a video using YOLO11 and SAHI.
-=======
-        weights="yolo11n.pt",
-        source="test.mp4",
-        view_img=False,
-        save_img=False,
-        exist_ok=False,
-    ):
         """Run object detection on a video using YOLO11 and SAHI.
->>>>>>> 02121a52dd0a636899376093a514e43cc27a4435
 
-        The function processes each frame of the video, applies sliced inference using SAHI,
-        and optionally displays and/or saves the results with bounding boxes and labels.
+        The function processes each frame of the video, applies sliced inference using SAHI, and optionally displays
+        and/or saves the results with bounding boxes and labels.
 
         Args:
             weights (str): Model weights' path.
@@ -80,8 +72,8 @@ class SAHIInference:
             view_img (bool): Whether to display results in a window.
             save_img (bool): Whether to save results to a video file.
             exist_ok (bool): Whether to overwrite existing output files.
-            device (str, optional): CUDA device, i.e., '0' or '0,1,2,3' or 'cpu'. Defaults to "".
-            hide_conf (bool, optional): Flag to show or hide confidences in the output. Defaults to False.
+            device (str, optional): CUDA device, i.e., '0' or '0,1,2,3' or 'cpu'.
+            hide_conf (bool, optional): Flag to show or hide confidences in the output.
             slice_width (int, optional): Slice width for inference.
             slice_height (int, optional): Slice height for inference.
         """
@@ -95,7 +87,7 @@ class SAHIInference:
 
         # Load model
         self.load_model(weights, device)
-        idx = 0  # index for image frame writing
+        idx = 0  # Index for image frame writing
         while cap.isOpened():
             success, frame = cap.read()
             if not success:
@@ -128,8 +120,7 @@ class SAHIInference:
 
     @staticmethod
     def parse_opt() -> argparse.Namespace:
-        """
-        Parse command line arguments for the inference process.
+        """Parse command line arguments for the inference process.
 
         Returns:
             (argparse.Namespace): Parsed command line arguments.

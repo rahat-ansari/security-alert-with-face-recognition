@@ -1,20 +1,20 @@
 # Ultralytics 🚀 AGPL-3.0 License - https://ultralytics.com/license
 """
-Ultralytics modules.
+Ultralytics neural network modules.
 
-This module provides access to various neural network components used in Ultralytics models, including convolution blocks,
-attention mechanisms, transformer components, and detection/segmentation heads.
+This module provides access to various neural network components used in Ultralytics models, including convolution
+blocks, attention mechanisms, transformer components, and detection/segmentation heads.
 
 Examples:
-    Visualize a module with Netron.
-    >>> from ultralytics.nn.modules import *
+    Visualize a module with Netron
+    >>> from ultralytics.nn.modules import Conv
     >>> import torch
-    >>> import os
+    >>> import subprocess
     >>> x = torch.ones(1, 128, 40, 40)
     >>> m = Conv(128, 128)
     >>> f = f"{m._get_name()}.onnx"
     >>> torch.onnx.export(m, x, f)
-    >>> os.system(f"onnxslim {f} {f} && open {f}")  # pip install onnxslim
+    >>> subprocess.run(f"onnxslim {f} {f} && open {f}", shell=True, check=True)  # pip install onnxslim
 """
 
 from .block import (
@@ -119,41 +119,13 @@ __all__ = (
     "SPP",
     "SPPELAN",
     "SPPF",
+    "A2C2f",
     "AConv",
     "ADown",
     "Attention",
     "BNContrastiveHead",
     "Bottleneck",
     "BottleneckCSP",
-<<<<<<< HEAD
-    "Proto",
-    "Detect",
-    "Segment",
-    "Pose",
-    "Classify",
-    "TransformerEncoderLayer",
-    "RepC3",
-    "RTDETRDecoder",
-    "AIFI",
-    "DeformableTransformerDecoder",
-    "DeformableTransformerDecoderLayer",
-    "MSDeformAttn",
-    "MLP",
-    "ResNetLayer",
-    "OBB",
-    "WorldDetect",
-    "YOLOEDetect",
-    "YOLOESegment",
-    "v10Detect",
-    "LRPCHead",
-    "ImagePoolingAttn",
-    "MaxSigmoidAttnBlock",
-    "ContrastiveHead",
-    "BNContrastiveHead",
-    "RepNCSPELAN4",
-    "ADown",
-    "SPPELAN",
-=======
     "C2f",
     "C2fAttn",
     "C2fCIB",
@@ -161,7 +133,6 @@ __all__ = (
     "C3Ghost",
     "C3k2",
     "C3x",
->>>>>>> 02121a52dd0a636899376093a514e43cc27a4435
     "CBFuse",
     "CBLinear",
     "ChannelAttention",
@@ -183,13 +154,12 @@ __all__ = (
     "HGStem",
     "ImagePoolingAttn",
     "Index",
-<<<<<<< HEAD
-    "A2C2f",
-=======
+    "LRPCHead",
     "LayerNorm2d",
     "LightConv",
     "MLPBlock",
     "MSDeformAttn",
+    "MaxSigmoidAttnBlock",
     "Pose",
     "Proto",
     "RTDETRDecoder",
@@ -206,6 +176,7 @@ __all__ = (
     "TransformerEncoderLayer",
     "TransformerLayer",
     "WorldDetect",
+    "YOLOEDetect",
+    "YOLOESegment",
     "v10Detect",
->>>>>>> 02121a52dd0a636899376093a514e43cc27a4435
 )

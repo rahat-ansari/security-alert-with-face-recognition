@@ -8,6 +8,17 @@ keywords: YOLO11, Comet ML, logging, machine learning, training, model checkpoin
 
 Logging key training details such as parameters, metrics, image predictions, and model checkpoints is essential in [machine learning](https://www.ultralytics.com/glossary/machine-learning-ml)—it keeps your project transparent, your progress measurable, and your results repeatable.
 
+<p align="center">
+  <br>
+  <iframe loading="lazy" width="720" height="405" src="https://www.youtube.com/embed/LPodYpvKkvI"
+    title="YouTube video player" frameborder="0"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+    allowfullscreen>
+  </iframe>
+  <br>
+  <strong>Watch:</strong> How to Use Comet ML for Ultralytics YOLO Model Training Logs and Metrics 🚀
+</p>
+
 [Ultralytics YOLO11](https://www.ultralytics.com/) seamlessly integrates with Comet ML, efficiently capturing and optimizing every aspect of your YOLO11 [object detection](https://www.ultralytics.com/glossary/object-detection) model's training process. In this guide, we'll cover the installation process, Comet ML setup, real-time insights, custom logging, and offline usage, ensuring that your YOLO11 training is thoroughly documented and fine-tuned for outstanding results.
 
 ## Comet ML
@@ -44,7 +55,7 @@ After installing the required packages, you'll need to sign up, get a [Comet API
     === "CLI"
 
         ```bash
-        # Set your Comet Api Key
+        # Set your Comet API Key
         export COMET_API_KEY=YOUR_API_KEY
         ```
 
@@ -97,7 +108,7 @@ Let's dive into what you'll see on the Comet ML dashboard once your YOLO11 model
 
 **Experiment Panels**
 
-The experiment panels section of the Comet ML dashboard organize and present the different runs and their metrics, such as segment mask loss, class loss, precision, and [mean average precision](https://www.ultralytics.com/glossary/mean-average-precision-map).
+The experiment panels section of the Comet ML dashboard organizes and presents the different runs and their metrics, such as segment mask loss, class loss, precision, and [mean average precision](https://www.ultralytics.com/glossary/mean-average-precision-map).
 
 <p align="center">
   <img width="640" src="https://github.com/ultralytics/docs/releases/download/0/comet-ml-dashboard-overview.avif" alt="Comet ML Overview">
@@ -175,7 +186,7 @@ os.environ["COMET_MODE"] = "offline"
 
 This guide has walked you through integrating Comet ML with Ultralytics' YOLO11. From installation to customization, you've learned to streamline experiment management, gain real-time insights, and adapt logging to your project's needs.
 
-Explore [Comet ML's official documentation](https://www.comet.com/docs/v2/integrations/third-party-tools/yolov8/) for more insights on integrating with YOLO11.
+Explore [Comet ML's official YOLOv8 integration documentation](https://www.comet.com/docs/v2/integrations/third-party-tools/yolov8/), which also applies to YOLO11 projects.
 
 Furthermore, if you're looking to dive deeper into the practical applications of YOLO11, specifically for [image segmentation](https://www.ultralytics.com/glossary/image-segmentation) tasks, this detailed guide on [fine-tuning YOLO11 with Comet ML](https://www.comet.com/site/blog/fine-tuning-yolov8-for-image-segmentation-with-comet/) offers valuable insights and step-by-step instructions to enhance your model's performance.
 

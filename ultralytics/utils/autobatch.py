@@ -1,6 +1,8 @@
 # Ultralytics 🚀 AGPL-3.0 License - https://ultralytics.com/license
 """Functions for estimating the best YOLO batch size to use a fraction of the available CUDA memory in PyTorch."""
 
+from __future__ import annotations
+
 import os
 from copy import deepcopy
 
@@ -11,14 +13,20 @@ from ultralytics.utils import DEFAULT_CFG, LOGGER, colorstr
 from ultralytics.utils.torch_utils import autocast, profile_ops
 
 
-def check_train_batch_size(model, imgsz=640, amp=True, batch=-1, max_num_obj=1):
+def check_train_batch_size(
+    model: torch.nn.Module,
+    imgsz: int = 640,
+    amp: bool = True,
+    batch: int | float = -1,
+    max_num_obj: int = 1,
+) -> int:
     """Compute optimal YOLO training batch size using the autobatch() function.
 
     Args:
         model (torch.nn.Module): YOLO model to check batch size for.
         imgsz (int, optional): Image size used for training.
         amp (bool, optional): Use automatic mixed precision if True.
-        batch (float, optional): Fraction of GPU memory to use. If -1, use default.
+        batch (int | float, optional): Fraction of GPU memory to use. If -1, use default.
         max_num_obj (int, optional): The maximum number of objects from dataset.
 
     Returns:
@@ -34,7 +42,13 @@ def check_train_batch_size(model, imgsz=640, amp=True, batch=-1, max_num_obj=1):
         )
 
 
-def autobatch(model, imgsz=640, fraction=0.60, batch_size=DEFAULT_CFG.batch, max_num_obj=1):
+def autobatch(
+    model: torch.nn.Module,
+    imgsz: int = 640,
+    fraction: float = 0.60,
+    batch_size: int = DEFAULT_CFG.batch,
+    max_num_obj: int = 1,
+) -> int:
     """Automatically estimate the best YOLO batch size to use a fraction of the available CUDA memory.
 
     Args:
@@ -84,13 +98,8 @@ def autobatch(model, imgsz=640, fraction=0.60, batch_size=DEFAULT_CFG.batch, max
             and (i == 0 or not results[i - 1] or y[2] > results[i - 1][2])  # first item or increasing memory
         ]
         fit_x, fit_y = zip(*xy) if xy else ([], [])
-<<<<<<< HEAD
         p = np.polyfit(fit_x, fit_y, deg=1)  # first-degree polynomial fit in log space
         b = int((round(f * fraction) - p[1]) / p[0])  # y intercept (optimal batch size)
-=======
-        p = np.polyfit(np.log(fit_x), np.log(fit_y), deg=1)  # first-degree polynomial fit in log space
-        b = round(np.exp((np.log(f * fraction) - p[1]) / p[0]))  # y intercept (optimal batch size)
->>>>>>> 02121a52dd0a636899376093a514e43cc27a4435
         if None in results:  # some sizes failed
             i = results.index(None)  # first fail index
             if b >= batch_sizes[i]:  # y intercept above failure point

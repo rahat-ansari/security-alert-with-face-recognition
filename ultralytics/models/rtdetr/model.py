@@ -11,6 +11,7 @@ References:
 
 from ultralytics.engine.model import Model
 from ultralytics.nn.tasks import RTDETRDetectionModel
+from ultralytics.utils.torch_utils import TORCH_1_11
 
 from .predict import RTDETRPredictor
 from .train import RTDETRTrainer
@@ -18,47 +19,36 @@ from .val import RTDETRValidator
 
 
 class RTDETR(Model):
-<<<<<<< HEAD
-    """
-    Interface for Baidu's RT-DETR model, a Vision Transformer-based real-time object detector.
+    """Interface for Baidu's RT-DETR model, a Vision Transformer-based real-time object detector.
 
     This model provides real-time performance with high accuracy. It supports efficient hybrid encoding, IoU-aware query
     selection, and adaptable inference speed.
-=======
-    """Interface for Baidu's RT-DETR model. This Vision Transformer-based object detector provides real-time performance
-    with high accuracy. It supports efficient hybrid encoding, IoU-aware query selection, and adaptable
-    inference speed.
->>>>>>> 02121a52dd0a636899376093a514e43cc27a4435
 
     Attributes:
         model (str): Path to the pre-trained model.
 
+    Methods:
+        task_map: Return a task map for RT-DETR, associating tasks with corresponding Ultralytics classes.
+
     Examples:
+        Initialize RT-DETR with a pre-trained model
         >>> from ultralytics import RTDETR
         >>> model = RTDETR("rtdetr-l.pt")
         >>> results = model("image.jpg")
     """
 
-<<<<<<< HEAD
     def __init__(self, model: str = "rtdetr-l.pt") -> None:
-        """
-        Initialize the RT-DETR model with the given pre-trained model file.
-=======
-    def __init__(self, model="rtdetr-l.pt") -> None:
-        """Initializes the RT-DETR model with the given pre-trained model file. Supports .pt and .yaml formats.
->>>>>>> 02121a52dd0a636899376093a514e43cc27a4435
+        """Initialize the RT-DETR model with the given pre-trained model file.
 
         Args:
             model (str): Path to the pre-trained model. Supports .pt, .yaml, and .yml formats.
-
-        Raises:
-            NotImplementedError: If the model file extension is not 'pt', 'yaml', or 'yml'.
         """
+        assert TORCH_1_11, "RTDETR requires torch>=1.11"
         super().__init__(model=model, task="detect")
 
     @property
     def task_map(self) -> dict:
-        """Returns a task map for RT-DETR, associating tasks with corresponding Ultralytics classes.
+        """Return a task map for RT-DETR, associating tasks with corresponding Ultralytics classes.
 
         Returns:
             (dict): A dictionary mapping task names to Ultralytics task classes for the RT-DETR model.

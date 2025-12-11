@@ -22,8 +22,7 @@ except (ImportError, AssertionError, TypeError, AttributeError):
 
 
 def _log_scalars(scalars: dict, step: int = 0) -> None:
-    """
-    Log scalar values to TensorBoard.
+    """Log scalar values to TensorBoard.
 
     Args:
         scalars (dict): Dictionary of scalar values to log to TensorBoard. Keys are scalar names and values are the
@@ -31,7 +30,7 @@ def _log_scalars(scalars: dict, step: int = 0) -> None:
         step (int): Global step value to record with the scalar values. Used for x-axis in TensorBoard graphs.
 
     Examples:
-        >>> # Log training metrics
+        Log training metrics
         >>> metrics = {"loss": 0.5, "accuracy": 0.95}
         >>> _log_scalars(metrics, step=100)
     """
@@ -41,17 +40,15 @@ def _log_scalars(scalars: dict, step: int = 0) -> None:
 
 
 def _log_tensorboard_graph(trainer) -> None:
-    """
-    Log model graph to TensorBoard.
+    """Log model graph to TensorBoard.
 
     This function attempts to visualize the model architecture in TensorBoard by tracing the model with a dummy input
     tensor. It first tries a simple method suitable for YOLO models, and if that fails, falls back to a more complex
     approach for models like RTDETR that may require special handling.
 
     Args:
-        trainer (BaseTrainer): The trainer object containing the model to visualize. Must have attributes:
-            - model: PyTorch model to visualize
-            - args: Configuration arguments with 'imgsz' attribute
+        trainer (ultralytics.engine.trainer.BaseTrainer): The trainer object containing the model to visualize. Must
+            have attributes model and args with imgsz.
 
     Notes:
         This function requires TensorBoard integration to be enabled and the global WRITER to be initialized.
@@ -71,14 +68,14 @@ def _log_tensorboard_graph(trainer) -> None:
         # Try simple method first (YOLO)
         try:
             trainer.model.eval()  # place in .eval() mode to avoid BatchNorm statistics changes
-            WRITER.add_graph(torch.jit.trace(torch_utils.de_parallel(trainer.model), im, strict=False), [])
+            WRITER.add_graph(torch.jit.trace(torch_utils.unwrap_model(trainer.model), im, strict=False), [])
             LOGGER.info(f"{PREFIX}model graph visualization added ✅")
             return
 
         except Exception:
             # Fallback to TorchScript export steps (RTDETR)
             try:
-                model = deepcopy(torch_utils.de_parallel(trainer.model))
+                model = deepcopy(torch_utils.unwrap_model(trainer.model))
                 model.eval()
                 model = model.fuse(verbose=False)
                 for m in model.modules():
@@ -110,13 +107,13 @@ def on_train_start(trainer) -> None:
 
 
 def on_train_epoch_end(trainer) -> None:
-    """Logs scalar statistics at the end of a training epoch."""
+    """Log scalar statistics at the end of a training epoch."""
     _log_scalars(trainer.label_loss_items(trainer.tloss, prefix="train"), trainer.epoch + 1)
     _log_scalars(trainer.lr, trainer.epoch + 1)
 
 
 def on_fit_epoch_end(trainer) -> None:
-    """Logs epoch metrics at end of training epoch."""
+    """Log epoch metrics at end of training epoch."""
     _log_scalars(trainer.metrics, trainer.epoch + 1)
 
 

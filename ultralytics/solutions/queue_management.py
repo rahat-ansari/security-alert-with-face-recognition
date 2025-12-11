@@ -1,5 +1,7 @@
 # Ultralytics 🚀 AGPL-3.0 License - https://ultralytics.com/license
 
+from typing import Any
+
 from ultralytics.solutions.solutions import BaseSolution, SolutionAnnotator, SolutionResults
 from ultralytics.utils.plotting import colors
 
@@ -12,17 +14,17 @@ class QueueManager(BaseSolution):
 
     Attributes:
         counts (int): The current count of objects in the queue.
-        rect_color (Tuple[int, int, int]): RGB color tuple for drawing the queue region rectangle.
+        rect_color (tuple[int, int, int]): RGB color tuple for drawing the queue region rectangle.
         region_length (int): The number of points defining the queue region.
-        track_line (List[Tuple[int, int]]): List of track line coordinates.
-        track_history (Dict[int, List[Tuple[int, int]]]): Dictionary storing tracking history for each object.
+        track_line (list[tuple[int, int]]): List of track line coordinates.
+        track_history (dict[int, list[tuple[int, int]]]): Dictionary storing tracking history for each object.
 
     Methods:
-        initialize_region: Initializes the queue region.
-        process: Processes a single frame for queue management.
-        extract_tracks: Extracts object tracks from the current frame.
-        store_tracking_history: Stores the tracking history for an object.
-        display_output: Displays the processed output.
+        initialize_region: Initialize the queue region.
+        process: Process a single frame for queue management.
+        extract_tracks: Extract object tracks from the current frame.
+        store_tracking_history: Store the tracking history for an object.
+        display_output: Display the processed output.
 
     Examples:
         >>> cap = cv2.VideoCapture("path/to/video.mp4")
@@ -34,45 +36,23 @@ class QueueManager(BaseSolution):
         >>>     results = queue_manager.process(im0)
     """
 
-    def __init__(self, **kwargs):
-        """Initializes the QueueManager with parameters for tracking and counting objects in a video stream."""
+    def __init__(self, **kwargs: Any) -> None:
+        """Initialize the QueueManager with parameters for tracking and counting objects in a video stream."""
         super().__init__(**kwargs)
         self.initialize_region()
         self.counts = 0  # Queue counts information
         self.rect_color = (255, 255, 255)  # Rectangle color for visualization
         self.region_length = len(self.region)  # Store region length for further usage
 
-<<<<<<< HEAD
-    def process(self, im0):
-        """
-        Process queue management for a single frame of video.
-=======
-    def process_queue(self, im0):
-        """Processes the queue management for a single frame of video.
->>>>>>> 02121a52dd0a636899376093a514e43cc27a4435
+    def process(self, im0) -> SolutionResults:
+        """Process queue management for a single frame of video.
 
         Args:
-            im0 (numpy.ndarray): Input image for processing, typically a frame from a video stream.
+            im0 (np.ndarray): Input image for processing, typically a frame from a video stream.
 
         Returns:
-<<<<<<< HEAD
             (SolutionResults): Contains processed image `im0`, 'queue_count' (int, number of objects in the queue) and
                 'total_tracks' (int, total number of tracked objects).
-=======
-            (numpy.ndarray): Processed image with annotations, bounding boxes, and queue counts.
-        This method performs the following steps:
-        1. Resets the queue count for the current frame.
-        2. Initializes an Annotator object for drawing on the image.
-        3. Extracts tracks from the image.
-        4. Draws the counting region on the image.
-        5. For each detected object:
-           - Draws bounding boxes and labels.
-           - Stores tracking history.
-           - Draws centroids and tracks.
-           - Checks if the object is inside the counting region and updates the count.
-        6. Displays the queue count on the image.
-        7. Displays the processed output.
->>>>>>> 02121a52dd0a636899376093a514e43cc27a4435
 
         Examples:
             >>> queue_manager = QueueManager()
@@ -100,13 +80,8 @@ class QueueManager(BaseSolution):
                 self.counts += 1
 
         # Display queue counts
-<<<<<<< HEAD
         annotator.queue_counts_display(
-            f"Queue Counts : {str(self.counts)}",
-=======
-        self.annotator.queue_counts_display(
-            f"Queue Counts : {self.counts!s}",
->>>>>>> 02121a52dd0a636899376093a514e43cc27a4435
+            f"Queue Counts : {self.counts}",
             points=self.region,
             region_color=self.rect_color,
             txt_color=(104, 31, 17),

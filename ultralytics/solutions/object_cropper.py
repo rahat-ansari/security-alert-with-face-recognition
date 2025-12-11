@@ -2,14 +2,14 @@
 
 import os
 from pathlib import Path
+from typing import Any
 
 from ultralytics.solutions.solutions import BaseSolution, SolutionResults
 from ultralytics.utils.plotting import save_one_box
 
 
 class ObjectCropper(BaseSolution):
-    """
-    A class to manage the cropping of detected objects in a real-time video stream or images.
+    """A class to manage the cropping of detected objects in a real-time video stream or images.
 
     This class extends the BaseSolution class and provides functionality for cropping objects based on detected bounding
     boxes. The cropped images are saved to a specified directory for further analysis or usage.
@@ -21,7 +21,7 @@ class ObjectCropper(BaseSolution):
         conf (float): Confidence threshold for filtering detections.
 
     Methods:
-        process: Crops detected objects from the input image and saves them to the output directory.
+        process: Crop detected objects from the input image and save them to the output directory.
 
     Examples:
         >>> cropper = ObjectCropper()
@@ -30,13 +30,12 @@ class ObjectCropper(BaseSolution):
         >>> print(f"Total cropped objects: {cropper.crop_idx}")
     """
 
-    def __init__(self, **kwargs):
-        """
-        Initialize the ObjectCropper class for cropping objects from detected bounding boxes.
+    def __init__(self, **kwargs: Any) -> None:
+        """Initialize the ObjectCropper class for cropping objects from detected bounding boxes.
 
         Args:
-            **kwargs (Any): Keyword arguments passed to the parent class and used for configuration.
-                crop_dir (str): Path to the directory for saving cropped object images.
+            **kwargs (Any): Keyword arguments passed to the parent class and used for configuration including:
+                - crop_dir (str): Path to the directory for saving cropped object images.
         """
         super().__init__(**kwargs)
 
@@ -51,15 +50,15 @@ class ObjectCropper(BaseSolution):
         self.iou = self.CFG["iou"]
         self.conf = self.CFG["conf"]
 
-    def process(self, im0):
-        """
-        Crop detected objects from the input image and save them as separate images.
+    def process(self, im0) -> SolutionResults:
+        """Crop detected objects from the input image and save them as separate images.
 
         Args:
-            im0 (numpy.ndarray): The input image containing detected objects.
+            im0 (np.ndarray): The input image containing detected objects.
 
         Returns:
-            (SolutionResults): A SolutionResults object containing the total number of cropped objects and processed image.
+            (SolutionResults): A SolutionResults object containing the total number of cropped objects and processed
+                image.
 
         Examples:
             >>> cropper = ObjectCropper()
@@ -67,9 +66,16 @@ class ObjectCropper(BaseSolution):
             >>> results = cropper.process(frame)
             >>> print(f"Total cropped objects: {results.total_crop_objects}")
         """
-        results = self.model.predict(
-            im0, classes=self.classes, conf=self.conf, iou=self.iou, device=self.CFG["device"]
-        )[0]
+        with self.profilers[0]:
+            results = self.model.predict(
+                im0,
+                classes=self.classes,
+                conf=self.conf,
+                iou=self.iou,
+                device=self.CFG["device"],
+                verbose=False,
+            )[0]
+            self.clss = results.boxes.cls.tolist()  # required for logging only.
 
         for box in results.boxes:
             self.crop_idx += 1

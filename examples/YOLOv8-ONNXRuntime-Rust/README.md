@@ -20,7 +20,7 @@ Newly updated YOLOv8 example code is located in [this repository](https://github
 
 ### 1. Install Rust
 
-Please follow the official Rust installation guide: [https://www.rust-lang.org/tools/install](https://www.rust-lang.org/tools/install).
+Please follow the official Rust installation guide: [https://www.rust-lang.org/tools/install](https://rust-lang.org/tools/install/).
 
 ### 2. ONNXRuntime Linking
 
@@ -29,7 +29,7 @@ Please follow the official Rust installation guide: [https://www.rust-lang.org/t
 - #### For Linux or macOS Users:
   - Download the ONNX Runtime package from the [Releases page](https://github.com/microsoft/onnxruntime/releases).
   - Set up the library path by exporting the `ORT_DYLIB_PATH` environment variable:
-    ```shell
+    ```bash
     export ORT_DYLIB_PATH=/path/to/onnxruntime/lib/libonnxruntime.so.1.19.0 # Adjust version/path as needed
     ```
 
@@ -48,19 +48,14 @@ First, install the Ultralytics package:
 pip install -U ultralytics
 ```
 
-<<<<<<< HEAD
 Then, export the desired [Ultralytics YOLOv8](https://docs.ultralytics.com/models/yolov8/) models to the ONNX format. See the [Export documentation](https://docs.ultralytics.com/modes/export/) for more details.
 
 ```bash
 # Export ONNX model with dynamic shapes (recommended for flexibility)
-=======
-# export onnx model with dynamic shapes
->>>>>>> 02121a52dd0a636899376093a514e43cc27a4435
 yolo export model=yolov8m.pt format=onnx simplify dynamic
 yolo export model=yolov8m-cls.pt format=onnx simplify dynamic
 yolo export model=yolov8m-pose.pt format=onnx simplify dynamic
 yolo export model=yolov8m-seg.pt format=onnx simplify dynamic
-<<<<<<< HEAD
 # yolo export model=yolov8m-obb.pt format=onnx simplify dynamic # Add OBB export if needed
 
 # Export ONNX model with constant shapes (if dynamic shapes are not required)
@@ -69,14 +64,6 @@ yolo export model=yolov8m-seg.pt format=onnx simplify dynamic
 # yolo export model=yolov8m-pose.pt format=onnx simplify
 # yolo export model=yolov8m-seg.pt format=onnx simplify
 # yolo export model=yolov8m-obb.pt format=onnx simplify
-=======
-
-# export onnx model with constant shapes
-yolo export model=yolov8m.pt format=onnx simplify
-yolo export model=yolov8m-cls.pt format=onnx simplify
-yolo export model=yolov8m-pose.pt format=onnx simplify
-yolo export model=yolov8m-seg.pt format=onnx simplify
->>>>>>> 02121a52dd0a636899376093a514e43cc27a4435
 ```
 
 ### 2. Run Inference
@@ -135,35 +122,22 @@ cargo run --release -- --trt --fp16 --profile --model MODEL_PATH.onnx --source S
 
 Example Profile Output (yolov8m.onnx, batch=1, 3 runs, trt, fp16, RTX 3060Ti):
 
-<<<<<<< HEAD
-```output
+```text
 ==> 0 # Warm-up run
-=======
-```bash
-== > 0
->>>>>>> 02121a52dd0a636899376093a514e43cc27a4435
 [Model Preprocess]: 12.75788ms
 [ORT H2D]: 237.118µs
 [ORT Inference]: 507.895469ms
 [ORT D2H]: 191.655µs
 [Model Inference]: 508.34589ms
 [Model Postprocess]: 1.061122ms
-<<<<<<< HEAD
 ==> 1 # Stable run
-=======
-== > 1
->>>>>>> 02121a52dd0a636899376093a514e43cc27a4435
 [Model Preprocess]: 13.658655ms
 [ORT H2D]: 209.975µs
 [ORT Inference]: 5.12372ms
 [ORT D2H]: 182.389µs
 [Model Inference]: 5.530022ms
 [Model Postprocess]: 1.04851ms
-<<<<<<< HEAD
 ==> 2 # Stable run
-=======
-== > 2
->>>>>>> 02121a52dd0a636899376093a514e43cc27a4435
 [Model Preprocess]: 12.475332ms
 [ORT H2D]: 246.127µs
 [ORT Inference]: 5.048432ms
@@ -203,7 +177,7 @@ cargo run --release -- --model ../assets/weights/yolov8m-cls-dyn.onnx --source .
 
 Example output:
 
-```output
+```text
 Summary:
 > Task: Classify (Ultralytics 8.0.217) # Version might differ
 > EP: Cpu

@@ -13,15 +13,9 @@ keywords: YOLOv5, custom dataset, model training, object detection, machine lear
 First, ensure you have the necessary environment set up. Clone the YOLOv5 repository and install the required dependencies from `requirements.txt`. A [**Python>=3.8.0**](https://www.python.org/) environment with [**PyTorch>=1.8**](https://pytorch.org/get-started/locally/) is essential. Models and datasets are automatically downloaded from the latest YOLOv5 [release](https://github.com/ultralytics/yolov5/releases) if they are not found locally.
 
 ```bash
-<<<<<<< HEAD
 git clone https://github.com/ultralytics/yolov5 # Clone the repository
 cd yolov5
 pip install -r requirements.txt # Install dependencies
-=======
-git clone https://github.com/ultralytics/yolov5 # clone
-cd yolov5
-pip install -r requirements.txt # install
->>>>>>> 02121a52dd0a636899376093a514e43cc27a4435
 ```
 
 ## Train On Custom Data
@@ -50,11 +44,7 @@ Developing a custom [object detection](https://docs.ultralytics.com/tasks/detect
 
     Explore our licensing options further on the [Ultralytics Licensing](https://www.ultralytics.com/license) page.
 
-<<<<<<< HEAD
 Before initiating the training, dataset preparation is essential.
-=======
-YOLOv5 models must be trained on labeled data in order to learn classes of objects in that data. There are two options for creating your dataset before you start training:
->>>>>>> 02121a52dd0a636899376093a514e43cc27a4435
 
 ## 1. Create a Dataset
 
@@ -70,11 +60,13 @@ The `dataset.yaml` file structure includes:
 - `train`, `val`, `test`: Relative paths from `path` to directories containing images or text files listing image paths for training, validation, and testing sets.
 - `names`: A dictionary mapping class indices (starting from 0) to their corresponding class names.
 
+You can set `path` to either an absolute directory (e.g., `/home/user/datasets/coco128`) or a relative path such as `../datasets/coco128` when launching training from the YOLOv5 repository root.
+
 Below is the structure for `coco128.yaml` ([view on GitHub](https://github.com/ultralytics/yolov5/blob/master/data/coco128.yaml)):
 
 ```yaml
 # Dataset root directory relative to the yolov5 directory
-path: ../datasets/coco128
+path: coco128
 
 # Train/val/test sets: specify directories, *.txt files, or lists
 train: images/train2017 # 128 images for training
@@ -122,13 +114,8 @@ Structure your [datasets](https://docs.ultralytics.com/datasets/) directory as i
 YOLOv5 automatically locates the labels for each image by substituting the last instance of `/images/` in the image path with `/labels/`. For example:
 
 ```bash
-<<<<<<< HEAD
 ../datasets/coco128/images/im0.jpg # Path to the image file
 ../datasets/coco128/labels/im0.txt # Path to the corresponding label file
-=======
-../datasets/coco128/images/im0.jpg # image
-../datasets/coco128/labels/im0.txt # label
->>>>>>> 02121a52dd0a636899376093a514e43cc27a4435
 ```
 
 The recommended directory structure is:
@@ -195,7 +182,7 @@ YOLOv5 seamlessly integrates with various tools for visualizing training progres
 
 Getting started is straightforward:
 
-```shell
+```bash
 pip install comet_ml                                                          # 1. Install Comet library
 export COMET_API_KEY=YOUR_API_KEY_HERE                                        # 2. Set your Comet API key (create a free account at Comet.ml)
 python train.py --img 640 --epochs 3 --data coco128.yaml --weights yolov5s.pt # 3. Train your model - Comet automatically logs everything!
@@ -252,7 +239,7 @@ Upon successful completion of training, the best performing model checkpoint (`b
 
 ## Supported Environments
 
-Ultralytics provides ready-to-use environments equipped with essential dependencies like [CUDA](https://developer.nvidia.com/cuda-zone), [cuDNN](https://developer.nvidia.com/cudnn), [Python](https://www.python.org/), and [PyTorch](https://pytorch.org/), facilitating a smooth start.
+Ultralytics provides ready-to-use environments equipped with essential dependencies like [CUDA](https://developer.nvidia.com/cuda), [cuDNN](https://developer.nvidia.com/cudnn), [Python](https://www.python.org/), and [PyTorch](https://pytorch.org/), facilitating a smooth start.
 
 - **Free GPU Notebooks**:
     - <a href="https://bit.ly/yolov5-paperspace-notebook"><img src="https://assets.paperspace.io/img/gradient-badge.svg" alt="Run on Gradient"></a>
@@ -272,8 +259,6 @@ Ultralytics provides ready-to-use environments equipped with essential dependenc
 This badge indicates that all YOLOv5 [GitHub Actions](https://github.com/ultralytics/yolov5/actions) [Continuous Integration (CI)](https://www.ultralytics.com/glossary/continuous-integration-ci) tests are passing successfully. These rigorous CI tests cover the core functionalities, including [training](https://docs.ultralytics.com/modes/train/), [validation](https://docs.ultralytics.com/modes/val/), [inference](https://docs.ultralytics.com/modes/predict/), [export](https://docs.ultralytics.com/modes/export/), and [benchmarks](https://docs.ultralytics.com/modes/benchmark/), across macOS, Windows, and Ubuntu operating systems. Tests are executed automatically every 24 hours and upon each code commit, ensuring consistent stability and optimal performance.
 
 ## FAQ
-
-## Frequently Asked Questions
 
 ### How do I train YOLOv5 on my custom dataset?
 

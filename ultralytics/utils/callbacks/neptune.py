@@ -18,12 +18,11 @@ except (ImportError, AssertionError):
 
 
 def _log_scalars(scalars: dict, step: int = 0) -> None:
-    """
-    Log scalars to the NeptuneAI experiment logger.
+    """Log scalars to the NeptuneAI experiment logger.
 
     Args:
         scalars (dict): Dictionary of scalar values to log to NeptuneAI.
-        step (int): The current step or iteration number for logging.
+        step (int, optional): The current step or iteration number for logging.
 
     Examples:
         >>> metrics = {"mAP": 0.85, "loss": 0.32}
@@ -35,11 +34,10 @@ def _log_scalars(scalars: dict, step: int = 0) -> None:
 
 
 def _log_images(imgs_dict: dict, group: str = "") -> None:
-    """
-    Log images to the NeptuneAI experiment logger.
+    """Log images to the NeptuneAI experiment logger.
 
-    This function logs image data to Neptune.ai when a valid Neptune run is active. Images are organized
-    under the specified group name.
+    This function logs image data to Neptune.ai when a valid Neptune run is active. Images are organized under the
+    specified group name.
 
     Args:
         imgs_dict (dict): Dictionary of images to log, with keys as image names and values as image data.
@@ -54,19 +52,8 @@ def _log_images(imgs_dict: dict, group: str = "") -> None:
             run[f"{group}/{k}"].upload(File(v))
 
 
-<<<<<<< HEAD
 def _log_plot(title: str, plot_path: str) -> None:
-    """
-    Log plots to the NeptuneAI experiment logger.
-=======
-def _log_plot(title, plot_path):
-    """Log plots to the NeptuneAI experiment logger.
->>>>>>> 02121a52dd0a636899376093a514e43cc27a4435
-
-    Args:
-        title (str): Title of the plot.
-        plot_path (str): Path to the saved image file.
-    """
+    """Log plots to the NeptuneAI experiment logger."""
     import matplotlib.image as mpimg
     import matplotlib.pyplot as plt
 
@@ -78,7 +65,7 @@ def _log_plot(title, plot_path):
 
 
 def on_pretrain_routine_start(trainer) -> None:
-    """Callback function called before the training routine starts."""
+    """Initialize NeptuneAI run and log hyperparameters before training starts."""
     try:
         global run
         run = neptune.init_run(
@@ -92,7 +79,7 @@ def on_pretrain_routine_start(trainer) -> None:
 
 
 def on_train_epoch_end(trainer) -> None:
-    """Callback function called at end of each training epoch."""
+    """Log training metrics and learning rate at the end of each training epoch."""
     _log_scalars(trainer.label_loss_items(trainer.tloss, prefix="train"), trainer.epoch + 1)
     _log_scalars(trainer.lr, trainer.epoch + 1)
     if trainer.epoch == 1:
@@ -100,7 +87,7 @@ def on_train_epoch_end(trainer) -> None:
 
 
 def on_fit_epoch_end(trainer) -> None:
-    """Callback function called at end of each fit (train+val) epoch."""
+    """Log model info and validation metrics at the end of each fit epoch."""
     if run and trainer.epoch == 0:
         from ultralytics.utils.torch_utils import model_info_for_loggers
 
@@ -109,25 +96,19 @@ def on_fit_epoch_end(trainer) -> None:
 
 
 def on_val_end(validator) -> None:
-    """Callback function called at end of each validation."""
+    """Log validation images at the end of validation."""
     if run:
         # Log val_labels and val_pred
         _log_images({f.stem: str(f) for f in validator.save_dir.glob("val*.jpg")}, "Validation")
 
 
 def on_train_end(trainer) -> None:
-    """Callback function called at end of training."""
+    """Log final results, plots, and model weights at the end of training."""
     if run:
         # Log final results, CM matrix + PR plots
-        files = [
-            "results.png",
-            "confusion_matrix.png",
-            "confusion_matrix_normalized.png",
-            *(f"{x}_curve.png" for x in ("F1", "PR", "P", "R")),
-        ]
-        files = [(trainer.save_dir / f) for f in files if (trainer.save_dir / f).exists()]  # filter
-        for f in files:
-            _log_plot(title=f.stem, plot_path=f)
+        for f in [*trainer.plots.keys(), *trainer.validator.plots.keys()]:
+            if "batch" not in f.name:
+                _log_plot(title=f.stem, plot_path=f)
         # Log the final model
         run[f"weights/{trainer.args.name or trainer.args.task}/{trainer.best.name}"].upload(File(str(trainer.best)))
 

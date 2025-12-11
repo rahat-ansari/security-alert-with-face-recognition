@@ -51,6 +51,10 @@ YOLO11 pretrained OBB models are shown here, which are pretrained on the [DOTAv1
 
 Train YOLO11n-obb on the DOTA8 dataset for 100 [epochs](https://www.ultralytics.com/glossary/epoch) at image size 640. For a full list of available arguments see the [Configuration](../usage/cfg.md) page.
 
+!!! note
+
+    OBB angles are constrained to the range **0–90 degrees** (exclusive of 90). Angles of 90 degrees or greater are not supported.
+
 !!! example
 
     === "Python"
@@ -121,7 +125,7 @@ Validate trained YOLO11n-obb model [accuracy](https://www.ultralytics.com/glossa
         metrics.box.map  # map50-95(B)
         metrics.box.map50  # map50(B)
         metrics.box.map75  # map75(B)
-        metrics.box.maps  # a list contains map50-95(B) of each category
+        metrics.box.maps  # a list containing mAP50-95(B) for each category
         ```
 
     === "CLI"
@@ -151,7 +155,7 @@ Use a trained YOLO11n-obb model to run predictions on images.
 
         # Access the results
         for result in results:
-            xywhr = result.keypoints.xy  # center-x, center-y, width, height, angle (radians)
+            xywhr = result.obb.xywhr  # center-x, center-y, width, height, angle (radians)
             xyxyxyxy = result.obb.xyxyxyxy  # polygon format with 4-points
             names = [result.names[cls.item()] for cls in result.obb.cls.int()]  # class name of each box
             confs = result.obb.conf  # confidence score of each box

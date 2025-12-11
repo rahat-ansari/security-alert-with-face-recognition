@@ -112,7 +112,7 @@ python export.py --weights yolov5s.pt --include torchscript onnx
 
 Output:
 
-```output
+```text
 export: data=data/coco128.yaml, weights=['yolov5s.pt'], imgsz=[640, 640], batch_size=1, device=cpu, half=False, inplace=False, train=False, keras=False, optimize=False, int8=False, dynamic=False, simplify=False, opset=12, verbose=False, workspace=4, nms=False, agnostic_nms=False, topk_per_class=100, topk_all=100, iou_thres=0.45, conf_thres=0.25, include=['torchscript', 'onnx']
 YOLOv5 🚀 v6.2-104-ge3e5122 Python-3.8.0 torch-1.12.1+cu113 CPU
 
@@ -151,7 +151,6 @@ The 3 exported models will be saved alongside the original PyTorch model:
 `detect.py` runs inference on exported models:
 
 ```bash
-<<<<<<< HEAD
 python detect.py --weights yolov5s.pt             # PyTorch
 python detect.py --weights yolov5s.torchscript    # TorchScript
 python detect.py --weights yolov5s.onnx           # ONNX Runtime or OpenCV DNN with dnn=True
@@ -163,25 +162,11 @@ python detect.py --weights yolov5s.pb             # TensorFlow GraphDef
 python detect.py --weights yolov5s.tflite         # TensorFlow Lite
 python detect.py --weights yolov5s_edgetpu.tflite # TensorFlow Edge TPU
 python detect.py --weights yolov5s_paddle_model   # PaddlePaddle
-=======
-python detect.py --weights yolov5s.pt # PyTorch
-yolov5s.torchscript                   # TorchScript
-yolov5s.onnx                          # ONNX Runtime or OpenCV DNN with dnn=True
-yolov5s_openvino_model                # OpenVINO
-yolov5s.engine                        # TensorRT
-yolov5s.mlmodel                       # CoreML (macOS only)
-yolov5s_saved_model                   # TensorFlow SavedModel
-yolov5s.pb                            # TensorFlow GraphDef
-yolov5s.tflite                        # TensorFlow Lite
-yolov5s_edgetpu.tflite                # TensorFlow Edge TPU
-yolov5s_paddle_model                  # PaddlePaddle
->>>>>>> 02121a52dd0a636899376093a514e43cc27a4435
 ```
 
 `val.py` runs validation on exported models:
 
 ```bash
-<<<<<<< HEAD
 python val.py --weights yolov5s.pt             # PyTorch
 python val.py --weights yolov5s.torchscript    # TorchScript
 python val.py --weights yolov5s.onnx           # ONNX Runtime or OpenCV DNN with dnn=True
@@ -193,19 +178,6 @@ python val.py --weights yolov5s.pb             # TensorFlow GraphDef
 python val.py --weights yolov5s.tflite         # TensorFlow Lite
 python val.py --weights yolov5s_edgetpu.tflite # TensorFlow Edge TPU
 python val.py --weights yolov5s_paddle_model   # PaddlePaddle
-=======
-python val.py --weights yolov5s.pt # PyTorch
-yolov5s.torchscript                # TorchScript
-yolov5s.onnx                       # ONNX Runtime or OpenCV DNN with dnn=True
-yolov5s_openvino_model             # OpenVINO
-yolov5s.engine                     # TensorRT
-yolov5s.mlmodel                    # CoreML (macOS Only)
-yolov5s_saved_model                # TensorFlow SavedModel
-yolov5s.pb                         # TensorFlow GraphDef
-yolov5s.tflite                     # TensorFlow Lite
-yolov5s_edgetpu.tflite             # TensorFlow Edge TPU
-yolov5s_paddle_model               # PaddlePaddle
->>>>>>> 02121a52dd0a636899376093a514e43cc27a4435
 ```
 
 Use PyTorch Hub with exported YOLOv5 models:
@@ -215,7 +187,7 @@ import torch
 
 # Model
 model = torch.hub.load("ultralytics/yolov5", "custom", "yolov5s.pt")
-model = torch.hub.load("ultralytics/yolov5", "custom", "yolov5s.torchscript ")  # TorchScript
+model = torch.hub.load("ultralytics/yolov5", "custom", "yolov5s.torchscript")  # TorchScript
 model = torch.hub.load("ultralytics/yolov5", "custom", "yolov5s.onnx")  # ONNX Runtime
 model = torch.hub.load("ultralytics/yolov5", "custom", "yolov5s_openvino_model")  # OpenVINO
 model = torch.hub.load("ultralytics/yolov5", "custom", "yolov5s.engine")  # TensorRT
@@ -265,7 +237,7 @@ YOLOv5 OpenVINO C++ inference examples:
 
 ## Supported Environments
 
-Ultralytics provides a range of ready-to-use environments, each pre-installed with essential dependencies such as [CUDA](https://developer.nvidia.com/cuda-zone), [CUDNN](https://developer.nvidia.com/cudnn), [Python](https://www.python.org/), and [PyTorch](https://pytorch.org/), to kickstart your projects.
+Ultralytics provides a range of ready-to-use environments, each pre-installed with essential dependencies such as [CUDA](https://developer.nvidia.com/cuda), [CUDNN](https://developer.nvidia.com/cudnn), [Python](https://www.python.org/), and [PyTorch](https://pytorch.org/), to kickstart your projects.
 
 - **Free GPU Notebooks**: <a href="https://bit.ly/yolov5-paperspace-notebook"><img src="https://assets.paperspace.io/img/gradient-badge.svg" alt="Run on Gradient"></a> <a href="https://colab.research.google.com/github/ultralytics/yolov5/blob/master/tutorial.ipynb"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"></a> <a href="https://www.kaggle.com/models/ultralytics/yolov5"><img src="https://kaggle.com/static/images/open-in-kaggle.svg" alt="Open In Kaggle"></a>
 - **Google Cloud**: [GCP Quickstart Guide](../environments/google_cloud_quickstart_tutorial.md)

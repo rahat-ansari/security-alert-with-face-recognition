@@ -1,4 +1,5 @@
 # Ultralytics 🚀 AGPL-3.0 License - https://ultralytics.com/license
+
 from __future__ import annotations
 
 import argparse
@@ -18,9 +19,10 @@ from ultralytics.utils.torch_utils import select_device
 
 
 class TorchVisionVideoClassifier:
-    """Classifies videos using pretrained TorchVision models from https://pytorch.org/vision/stable/.
+    """Video classifier using pretrained TorchVision models for action recognition.
 
-    This class provides an interface for video classification using various pretrained models from TorchVision.
+    This class provides an interface for video classification using various pretrained models from TorchVision's video
+    model collection, supporting models like S3D, R3D, Swin3D, and MViT architectures.
 
     Attributes:
         model (torch.nn.Module): The loaded TorchVision model for video classification.
@@ -39,6 +41,9 @@ class TorchVisionVideoClassifier:
         >>> tensor = classifier.preprocess_crops_for_video_cls(crops)
         >>> outputs = classifier(tensor)
         >>> labels, confidences = classifier.postprocess(outputs)
+
+    References:
+        https://pytorch.org/vision/stable/
     """
 
     from torchvision.models.video import (
@@ -65,21 +70,12 @@ class TorchVisionVideoClassifier:
         "mvit_v2_s": (mvit_v2_s, MViT_V2_S_Weights.DEFAULT),
     }
 
-<<<<<<< HEAD
     def __init__(self, model_name: str, device: str | torch.device = ""):
-        """
-        Initialize the VideoClassifier with the specified model name and device.
-=======
-    def __init__(self, model_name: str, device: str or torch.device = ""):
         """Initialize the VideoClassifier with the specified model name and device.
->>>>>>> 02121a52dd0a636899376093a514e43cc27a4435
 
         Args:
             model_name (str): The name of the model to use. Must be one of the available models.
-            device (str | torch.device): The device to run the model on. Defaults to auto-detection.
-
-        Raises:
-            ValueError: If an invalid model name is provided.
+            device (str | torch.device): The device to run the model on.
         """
         if model_name not in self.model_name_to_model_and_weights:
             raise ValueError(f"Invalid model name '{model_name}'. Available models: {self.available_model_names()}")
@@ -92,22 +88,18 @@ class TorchVisionVideoClassifier:
         """Get the list of available model names.
 
         Returns:
-            (List[str]): List of available model names that can be used with this classifier.
+            (list[str]): List of available model names that can be used with this classifier.
         """
         return list(TorchVisionVideoClassifier.model_name_to_model_and_weights.keys())
 
-<<<<<<< HEAD
-    def preprocess_crops_for_video_cls(self, crops: List[np.ndarray], input_size: List[int] = None) -> torch.Tensor:
-        """
-        Preprocess a list of crops for video classification.
-=======
-    def preprocess_crops_for_video_cls(self, crops: list[np.ndarray], input_size: list | None = None) -> torch.Tensor:
+    def preprocess_crops_for_video_cls(
+        self, crops: list[np.ndarray], input_size: list[int] | None = None
+    ) -> torch.Tensor:
         """Preprocess a list of crops for video classification.
->>>>>>> 02121a52dd0a636899376093a514e43cc27a4435
 
         Args:
-            crops (List[np.ndarray]): List of crops to preprocess. Each crop should have dimensions (H, W, C).
-            input_size (List[int]): The target input size for the model. Defaults to [224, 224].
+            crops (list[np.ndarray]): List of crops to preprocess. Each crop should have dimensions (H, W, C).
+            input_size (list[int], optional): The target input size for the model.
 
         Returns:
             (torch.Tensor): Preprocessed crops as a tensor with dimensions (1, T, C, H, W).
@@ -127,22 +119,12 @@ class TorchVisionVideoClassifier:
         processed_crops = [transform(torch.from_numpy(crop).permute(2, 0, 1)) for crop in crops]
         return torch.stack(processed_crops).unsqueeze(0).permute(0, 2, 1, 3, 4).to(self.device)
 
-<<<<<<< HEAD
     def __call__(self, sequences: torch.Tensor) -> torch.Tensor:
-        """
-        Perform inference on the given sequences.
-
-        Args:
-            sequences (torch.Tensor): The input sequences for the model. Expected dimensions are
-                                     (B, T, C, H, W) for batched video frames or (T, C, H, W) for single video frames.
-=======
-    def __call__(self, sequences: torch.Tensor):
         """Perform inference on the given sequences.
 
         Args:
-            sequences (torch.Tensor): The input sequences for the model. The expected input dimensions are (B, T, C, H,
-                W) for batched video frames or (T, C, H, W) for single video frames.
->>>>>>> 02121a52dd0a636899376093a514e43cc27a4435
+            sequences (torch.Tensor): The input sequences for the model with dimensions (B, T, C, H, W) for batched
+                video frames or (T, C, H, W) for single video frames.
 
         Returns:
             (torch.Tensor): The model's output logits.
@@ -157,8 +139,8 @@ class TorchVisionVideoClassifier:
             outputs (torch.Tensor): The model's output logits.
 
         Returns:
-            (List[str]): The predicted labels.
-            (List[float]): The predicted confidences.
+            pred_labels (list[str]): The predicted labels.
+            pred_confs (list[float]): The predicted confidences.
         """
         pred_labels = []
         pred_confs = []
@@ -173,14 +155,14 @@ class TorchVisionVideoClassifier:
 
 
 class HuggingFaceVideoClassifier:
-    """
-    Zero-shot video classifier using Hugging Face models for various devices.
+    """Zero-shot video classifier using Hugging Face transformer models.
 
-    This class provides an interface for zero-shot video classification using Hugging Face models.
+    This class provides an interface for zero-shot video classification using Hugging Face models, supporting custom
+    label sets and various transformer architectures for video understanding.
 
     Attributes:
         fp16 (bool): Whether to use FP16 for inference.
-        labels (List[str]): List of labels for zero-shot classification.
+        labels (list[str]): List of labels for zero-shot classification.
         device (torch.device): The device on which the model is loaded.
         processor (transformers.AutoProcessor): The processor for the model.
         model (transformers.AutoModel): The loaded Hugging Face model.
@@ -209,10 +191,10 @@ class HuggingFaceVideoClassifier:
         """Initialize the HuggingFaceVideoClassifier with the specified model name.
 
         Args:
-            labels (List[str]): List of labels for zero-shot classification.
-            model_name (str): The name of the model to use. Defaults to "microsoft/xclip-base-patch16-zero-shot".
-            device (str | torch.device): The device to run the model on. Defaults to auto-detection.
-            fp16 (bool): Whether to use FP16 for inference. Defaults to False.
+            labels (list[str]): List of labels for zero-shot classification.
+            model_name (str): The name of the model to use.
+            device (str | torch.device): The device to run the model on.
+            fp16 (bool): Whether to use FP16 for inference.
         """
         self.fp16 = fp16
         self.labels = labels
@@ -223,18 +205,14 @@ class HuggingFaceVideoClassifier:
             model = model.half()
         self.model = model.eval()
 
-<<<<<<< HEAD
-    def preprocess_crops_for_video_cls(self, crops: List[np.ndarray], input_size: List[int] = None) -> torch.Tensor:
-        """
-        Preprocess a list of crops for video classification.
-=======
-    def preprocess_crops_for_video_cls(self, crops: list[np.ndarray], input_size: list | None = None) -> torch.Tensor:
+    def preprocess_crops_for_video_cls(
+        self, crops: list[np.ndarray], input_size: list[int] | None = None
+    ) -> torch.Tensor:
         """Preprocess a list of crops for video classification.
->>>>>>> 02121a52dd0a636899376093a514e43cc27a4435
 
         Args:
-            crops (List[np.ndarray]): List of crops to preprocess. Each crop should have dimensions (H, W, C).
-            input_size (List[int]): The target input size for the model. Defaults to [224, 224].
+            crops (list[np.ndarray]): List of crops to preprocess. Each crop should have dimensions (H, W, C).
+            input_size (list[int], optional): The target input size for the model.
 
         Returns:
             (torch.Tensor): Preprocessed crops as a tensor with dimensions (1, T, C, H, W).
@@ -263,8 +241,7 @@ class HuggingFaceVideoClassifier:
         """Perform inference on the given sequences.
 
         Args:
-            sequences (torch.Tensor): The input sequences for the model. Batched video frames with shape (B, T, H, W,
-                C).
+            sequences (torch.Tensor): Batched input video frames with shape (B, T, H, W, C).
 
         Returns:
             (torch.Tensor): The model's output logits.
@@ -285,8 +262,8 @@ class HuggingFaceVideoClassifier:
             outputs (torch.Tensor): The model's output logits.
 
         Returns:
-            (List[List[str]]): The predicted top3 labels for each sample.
-            (List[List[float]]): The predicted top3 confidences for each sample.
+            pred_labels (list[list[str]]): The predicted top2 labels for each sample.
+            pred_confs (list[list[float]]): The predicted top2 confidences for each sample.
         """
         pred_labels = []
         pred_confs = []
@@ -305,13 +282,12 @@ class HuggingFaceVideoClassifier:
         return pred_labels, pred_confs
 
 
-def crop_and_pad(frame: np.ndarray, box: List[float], margin_percent: int) -> np.ndarray:
-    """
-    Crop box with margin and take square crop from frame.
+def crop_and_pad(frame: np.ndarray, box: list[float], margin_percent: int) -> np.ndarray:
+    """Crop box with margin and take square crop from frame.
 
     Args:
         frame (np.ndarray): The input frame to crop from.
-        box (List[float]): The bounding box coordinates [x1, y1, x2, y2].
+        box (list[float]): The bounding box coordinates [x1, y1, x2, y2].
         margin_percent (int): The percentage of margin to add around the box.
 
     Returns:
@@ -353,37 +329,17 @@ def run(
     """Run action recognition on a video source using YOLO for object detection and a video classifier.
 
     Args:
-<<<<<<< HEAD
         weights (str): Path to the YOLO model weights.
         device (str): Device to run the model on. Use 'cuda' for NVIDIA GPU, 'mps' for Apple Silicon, or 'cpu'.
-            Defaults to auto-detection.
-        source (str): Path to mp4 video file or YouTube URL. Defaults to a sample YouTube video.
-        output_path (Optional[str]): Path to save the output video.
+        source (str): Path to mp4 video file or YouTube URL.
+        output_path (str, optional): Path to save the output video.
         crop_margin_percentage (int): Percentage of margin to add around detected objects.
         num_video_sequence_samples (int): Number of video frames to use for classification.
         skip_frame (int): Number of frames to skip between detections.
         video_cls_overlap_ratio (float): Overlap ratio between video sequences.
         fp16 (bool): Whether to use half-precision floating point.
         video_classifier_model (str): Name or path of the video classifier model.
-        labels (List[str]): List of labels for zero-shot classification.
-=======
-        weights (str): Path to the YOLO model weights. Defaults to "yolo11n.pt".
-        device (str): Device to run the model on. Use 'cuda' for NVIDIA GPU, 'mps' for Apple Silicon, or 'cpu'. Defaults
-            to auto-detection.
-        source (str): Path to mp4 video file or YouTube URL. Defaults to a sample YouTube video.
-        output_path (Optional[str], optional): Path to save the output video. Defaults to None.
-        crop_margin_percentage (int, optional): Percentage of margin to add around detected objects. Defaults to 10.
-        num_video_sequence_samples (int, optional): Number of video frames to use for classification. Defaults to 8.
-        skip_frame (int, optional): Number of frames to skip between detections. Defaults to 4.
-        video_cls_overlap_ratio (float, optional): Overlap ratio between video sequences. Defaults to 0.25.
-        fp16 (bool, optional): Whether to use half-precision floating point. Defaults to False.
-        video_classifier_model (str, optional): Name or path of the video classifier model. Defaults to
-            "microsoft/xclip-base-patch32".
-        labels (List[str], optional): List of labels for zero-shot classification. Defaults to predefined list.
-
-    Returns:
-        None</edit>
->>>>>>> 02121a52dd0a636899376093a514e43cc27a4435
+        labels (list[str], optional): List of labels for zero-shot classification.
     """
     if labels is None:
         labels = [
@@ -445,7 +401,7 @@ def run(
         # Run YOLO tracking
         results = yolo_model.track(frame, persist=True, classes=[0])  # Track only person class
 
-        if results[0].boxes.id is not None:
+        if results[0].boxes.is_track:
             boxes = results[0].boxes.xyxy.cpu().numpy()
             track_ids = results[0].boxes.id.cpu().numpy()
 
@@ -510,12 +466,7 @@ def run(
 
 
 def parse_opt() -> argparse.Namespace:
-    """
-    Parse command line arguments.
-
-    Returns:
-        (argparse.Namespace): Parsed command line arguments.
-    """
+    """Parse command line arguments for action recognition pipeline."""
     parser = argparse.ArgumentParser()
     parser.add_argument("--weights", type=str, default="yolo11n.pt", help="ultralytics detector model path")
     parser.add_argument("--device", default="", help='cuda device, i.e. 0 or 0,1,2,3 or cpu/mps, "" for auto-detection')
@@ -551,12 +502,7 @@ def parse_opt() -> argparse.Namespace:
 
 
 def main(opt: argparse.Namespace) -> None:
-    """
-    Main function to run the action recognition pipeline.
-
-    Args:
-        opt (argparse.Namespace): Command line arguments.
-    """
+    """Run the action recognition pipeline with parsed command line arguments."""
     run(**vars(opt))
 
 

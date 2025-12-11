@@ -1,6 +1,9 @@
 # Ultralytics 🚀 AGPL-3.0 License - https://ultralytics.com/license
 
+from __future__ import annotations
+
 import argparse
+from typing import Any
 
 import cv2.dnn
 import numpy as np
@@ -12,13 +15,10 @@ CLASSES = YAML.load(check_yaml("coco8.yaml"))["names"]
 colors = np.random.uniform(0, 255, size=(len(CLASSES), 3))
 
 
-def draw_bounding_box(img, class_id, confidence, x, y, x_plus_w, y_plus_h):
-<<<<<<< HEAD
-    """
-    Draw bounding boxes on the input image based on the provided arguments.
-=======
-    """Draws bounding boxes on the input image based on the provided arguments.
->>>>>>> 02121a52dd0a636899376093a514e43cc27a4435
+def draw_bounding_box(
+    img: np.ndarray, class_id: int, confidence: float, x: int, y: int, x_plus_w: int, y_plus_h: int
+) -> None:
+    """Draw bounding boxes on the input image based on the provided arguments.
 
     Args:
         img (np.ndarray): The input image to draw the bounding box on.
@@ -35,21 +35,16 @@ def draw_bounding_box(img, class_id, confidence, x, y, x_plus_w, y_plus_h):
     cv2.putText(img, label, (x - 10, y - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, color, 2)
 
 
-def main(onnx_model, input_image):
-<<<<<<< HEAD
-    """
-    Load ONNX model, perform inference, draw bounding boxes, and display the output image.
-=======
-    """Main function to load ONNX model, perform inference, draw bounding boxes, and display the output image.
->>>>>>> 02121a52dd0a636899376093a514e43cc27a4435
+def main(onnx_model: str, input_image: str) -> list[dict[str, Any]]:
+    """Load ONNX model, perform inference, draw bounding boxes, and display the output image.
 
     Args:
         onnx_model (str): Path to the ONNX model.
         input_image (str): Path to the input image.
 
     Returns:
-        (List[Dict]): List of dictionaries containing detection information such as class_id, class_name, confidence,
-        box coordinates, and scale factor.
+        (list[dict[str, Any]]): List of dictionaries containing detection information such as class_id, class_name,
+            confidence, box coordinates, and scale factor.
     """
     # Load the ONNX model
     model: cv2.dnn.Net = cv2.dnn.readNetFromONNX(onnx_model)
@@ -97,13 +92,13 @@ def main(onnx_model, input_image):
             class_ids.append(maxClassIndex)
 
     # Apply NMS (Non-maximum suppression)
-    result_boxes = cv2.dnn.NMSBoxes(boxes, scores, 0.25, 0.45, 0.5)
+    result_boxes = np.array(cv2.dnn.NMSBoxes(boxes, scores, 0.25, 0.45, 0.5)).flatten()
 
     detections = []
 
     # Iterate through NMS results to draw bounding boxes and labels
-    for i in range(len(result_boxes)):
-        index = result_boxes[i]
+    for index in result_boxes:
+        index = int(index)
         box = boxes[index]
         detection = {
             "class_id": class_ids[index],
