@@ -132,6 +132,9 @@ venv.bak/
 .vscode/
 .devcontainer/
 
+# Visual Studio folder
+.vs/
+
 # Rope project settings
 .ropeproject
 
@@ -198,3 +201,5 @@ calibration_*.npy
 *.heic
 *.ico
 *.raw
+*/.vs
+
