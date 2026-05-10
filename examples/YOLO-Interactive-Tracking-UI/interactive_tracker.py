@@ -10,7 +10,7 @@ from ultralytics import YOLO
 from ultralytics.utils import LOGGER
 from ultralytics.utils.plotting import Annotator, colors
 
-enable_gpu = False  # Set True if running with CUDA
+enable_gpu = True  # Set True if running with CUDA
 model_file = "yolo11s.pt"  # Path to model file
 show_fps = True  # If True, shows current FPS in top-left corner
 show_conf = False  # Display or hide the confidence score
